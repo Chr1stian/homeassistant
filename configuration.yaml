@@ -2,14 +2,14 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
   # Location required to calculate the time the sun rises and sets
-  latitude: 0
-  longitude: 0
+  latitude: !secret latitude
+  longitude: !secret longitude
   # Impacts weather/sunrise data (altitude above sea level in meters)
-  elevation: 0
+  elevation: 28
   # metric for Metric, imperial for Imperial
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: UTC
+  time_zone: Europe/Oslo
   # Customization file
   customize: !include customize.yaml
 
@@ -18,6 +18,10 @@ introduction:
 
 # Enables the frontend
 frontend:
+
+# Makes the lovelace frontend be editable from the ui-lovelace.yaml file
+lovelace:
+  mode: yaml
 
 # Enables configuration UI
 config:
@@ -47,6 +51,10 @@ history:
 # View all events in a logbook
 logbook:
 
+recorder:
+  purge_keep_days: 1
+  purge_interval: 1
+
 # Enables a map showing the location of tracked devices
 map:
 
@@ -64,6 +72,26 @@ tts:
 
 # Cloud
 cloud:
+  google_actions:
+    filter:
+      include_entities:
+        - switch.aeotec_zw140_dual_nano_switch_switch
+        - switch.aeotec_zw140_dual_nano_switch_switch_2
+        - switch.aeotec_zw139_nano_switch_switch
+      exclude_domains:
+        - switch
+        - media_player
+        - group
+    entity_config:
+      switch.aeotec_zw140_dual_nano_switch_switch:
+        name: Living Room
+        room: living room
+      switch.aeotec_zw140_dual_nano_switch_switch_2:
+        name: Kitchen
+        room: kitchen
+      switch.aeotec_zw139_nano_switch_switch:
+        name: Bedroom
+        room: bedroom
 
 group: !include groups.yaml
 automation: !include automations.yaml
