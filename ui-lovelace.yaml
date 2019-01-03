@@ -13,8 +13,11 @@ views:
         entities:
           - switch.aeotec_zw139_nano_switch_switch
           - switch.aeotec_zw140_dual_nano_switch_switch
+          - switch.bedroom_lamp
           - switch.aeotec_zw140_dual_nano_switch_switch_2
           - switch.aeotec_zw140_dual_nano_switch_switch_3
+          - switch.living_room_lamp
+          - switch.extra
       - type: entities
         title: Media Players
         entities:

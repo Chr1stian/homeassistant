@@ -65,12 +65,68 @@ sun:
 sensor:
   # Weather prediction
   - platform: yr
+  - platform: mqtt
+    name: "Living Room Temp"
+    state_topic: "tele/sonoffTH/SENSOR"
+    unit_of_measurement: "°C"
+    qos: 1
+    value_template: "{{ value_json.AM2301.Temperature }}"
+  - platform: mqtt
+    name: "Living Room Humidity"
+    state_topic: "tele/sonoffTH/SENSOR"
+    unit_of_measurement: "%"
+    qos: 1
+    value_template: "{{ value_json.AM2301.Humidity }}"
+
+switch:
+  - platform: mqtt
+    name: "Extra"
+    command_topic: "cmnd/sonoff/power"
+    state_topic: "stat/sonoff/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+  - platform: mqtt
+    name: "Living Room Lamp"
+    command_topic: "cmnd/sonoffTH/power"
+    state_topic: "stat/sonoffTH/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+  - platform: mqtt
+    name: "Bedroom Lamp"
+    command_topic: "cmnd/sonoffS20/power"
+    state_topic: "stat/sonoffS20/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+# To expose temperature to Google Home
+climate:
+  - platform: generic_thermostat
+    name: Living Room Temperature
+    heater: input_boolean.fake_heater
+    target_sensor: sensor.living_room_temp
+    initial_operation_mode: "off"
+    target_temp: 21
+
+# Faking the thermostat
+input_boolean:
+  fake_heater:
+    name: Fake Heater
+    icon: mdi:toggle-switch-off
+    initial: off
 
 # Text to speech
 tts:
   - platform: google
 
-# Cloud
+# Cloud - Google Home Device Interface Setup
 cloud:
   google_actions:
     filter:
@@ -78,20 +134,35 @@ cloud:
         - switch.aeotec_zw140_dual_nano_switch_switch
         - switch.aeotec_zw140_dual_nano_switch_switch_2
         - switch.aeotec_zw139_nano_switch_switch
+        - climate.living_room_temperature
+        - switch.living_room_lamp
+        - switch.bedroom_lamp
+        - switch.extra
       exclude_domains:
         - switch
         - media_player
         - group
     entity_config:
       switch.aeotec_zw140_dual_nano_switch_switch:
-        name: Living Room
+        name: Living Room Ceiling Light
         room: living room
       switch.aeotec_zw140_dual_nano_switch_switch_2:
-        name: Kitchen
+        name: Kitchen Ceiling Light
         room: kitchen
       switch.aeotec_zw139_nano_switch_switch:
-        name: Bedroom
+        name: Bedroom Ceiling Light
         room: bedroom
+      climate.living_room_temperature:
+        name: Living Room Temperature
+        room: living room
+      switch.living_room_lamp:
+        name: Living Room Lamp
+        room: living room
+      switch.bedroom_lamp:
+        name: Bedroom Lamp
+        room: bedroom
+      switch.extra:
+        name: Extra
 
 group: !include groups.yaml
 automation: !include automations.yaml
