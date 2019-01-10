@@ -14,7 +14,7 @@ homeassistant:
   customize: !include customize.yaml
 
 # Show links to resources in log and frontend
-introduction:
+#introduction:
 
 # Enables the frontend
 frontend:
@@ -122,6 +122,43 @@ input_boolean:
     icon: mdi:toggle-switch-off
     initial: off
 
+# Z-wave setup
+zwave:
+  usb_path: /dev/ttyACM0
+  network_key: !secret network_key
+
+# Device Tracking / Presence Detection
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.86.0/24
+    consider_home: 300
+
+# Google Wifi and Speedtest
+sensor googlewifi:
+  - platform: google_wifi
+
+#SPEEDTEST	
+sensor speedtest:
+  platform: speedtest
+  minute: 30
+  hour:
+    - 0
+    - 2
+    - 4
+    - 6
+    - 8
+    - 10
+    - 12
+    - 14
+    - 16
+    - 18
+    - 20
+    - 22
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+
 # Text to speech
 tts:
   - platform: google
@@ -138,6 +175,8 @@ cloud:
         - switch.living_room_lamp
         - switch.bedroom_lamp
         - switch.extra
+      exclude_entities:
+        - input_boolean.fake_heater
       exclude_domains:
         - switch
         - media_player
@@ -167,6 +206,7 @@ cloud:
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
+zone: !include zones.yaml
 
 panel_iframe:
   configurator:

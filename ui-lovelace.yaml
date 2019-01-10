@@ -2,24 +2,66 @@
 resources:
   - url: /local/mini-media-player-bundle.js?v=0.9.8
     type: module
+  - url: /local/mini-graph-card-bundle.js?v=0.1.0
+    type: module
 
 title: Home
 views:
-  - title: Home
+  - path: default_view
+    title: Home
+    icon: mdi:home
+    badges:
+      - device_tracker.preference_oneplus
+      - device_tracker.emily_p10
     cards:
       - type: entities
-        title: All Switches
+        title: Lights
         show_header_toggle: true
         entities:
-          - switch.aeotec_zw139_nano_switch_switch
-          - switch.aeotec_zw140_dual_nano_switch_switch
+          - entity: switch.aeotec_zw139_nano_switch_switch
+            name: Bedroom Ceiling Light
+          - entity: switch.aeotec_zw140_dual_nano_switch_switch
+            name: Living Room Ceiling Light
           - switch.bedroom_lamp
-          - switch.aeotec_zw140_dual_nano_switch_switch_2
-          - switch.aeotec_zw140_dual_nano_switch_switch_3
+          - entity: switch.aeotec_zw140_dual_nano_switch_switch_2
+            name: Kitchen Ceiling Light
           - switch.living_room_lamp
           - switch.extra
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: "custom:mini-graph-card"
+                entity: sensor.living_room_temp
+                name: Living Room
+                line_color: '#3498db'
+                line_width: 8
+              - type: "custom:mini-graph-card"
+                entity: sensor.living_room_humidity
+                device_class: humidity
+                name: Humidity
+                line_color: '#e74c3c'
+                line_width: 8
+              - type: "custom:mini-graph-card"
+                entity: sensor.fibaro_system_fgk101_door_opening_sensor_temperature
+                name: Bedroom
+                line_width: 8
+                style:
+                  font-size: 50%
+          - type: iframe
+            url: https://www.yr.no/sted/Norge/Tr%C3%B8ndelag/Trondheim/Trondheim/meteogram.png
+            # aspect_ratio: 50%
+      - type: entities
+        title: Doors
+        show_header_toggle: false
+        entities:
+        - entity: binary_sensor.fibaro_system_fgk101_door_opening_sensor_sensor_2
+          name: Bedroom Door
+          secondary_info: last-changed
+          device_class: door
       - type: entities
         title: Media Players
+        show_header_toggle: false
         entities:
           - entity: media_player.everywhere
             type: custom:mini-media-player
@@ -44,4 +86,31 @@ views:
             icon: mdi:google-home
             hide_controls: true
             group: true
+  - path: map
+    title: Map
+    icon: mdi:map
+    cards:
+      - type: map
+        entities:
+          - device_tracker.preference_oneplus
+          - device_tracker.emily_p10
+          - zone.home
+          - zone.school
+          - zone.work
+  - path: settings
+    title: Settings
+    icon: mdi:settings
+    cards:
+      - type: entities
+        entities:
+          - sensor.speedtest_download
+          - sensor.speedtest_upload
+          - sensor.speedtest_ping
+          - sensor.google_wifi_status
+          - sensor.google_wifi_uptime
+          - sensor.google_wifi_last_restart
+          - sensor.google_wifi_current_version
+          - sensor.google_wifi_local_ip
+          - sensor.google_wifi_new_version
+
           

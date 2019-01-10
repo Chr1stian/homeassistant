@@ -1,0 +1,4 @@
+binary_sensor.fibaro_system_fgk101_door_opening_sensor_sensor_2:
+  device_class: door
+sensor.living_room_humidity:
+  device_class: humidity
