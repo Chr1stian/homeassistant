@@ -131,7 +131,17 @@ zwave:
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.86.0/24
-    consider_home: 300
+    consider_home: 0:15:00
+    interval_seconds: 30
+
+# Sonos
+sonos:
+  media_player:
+    interface_addr: 192.168.86.44
+    hosts: 
+      - 192.168.86.51 #Beam - Living Room
+      - 192.168.86.52 #Play:1 - Living Room
+
 
 # Google Wifi and Speedtest
 sensor googlewifi:

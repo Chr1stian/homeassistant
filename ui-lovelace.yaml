@@ -63,8 +63,20 @@ views:
         title: Media Players
         show_header_toggle: false
         entities:
+          - entity: media_player.living_room
+            type: custom:mini-media-player
+            name: Sonos
+            icon: mdi:cassette
+            hide_power: true
+            group: true
+            #sonos_grouping:
+             # - entity_id: media_player.living_room
+             #   name: Beam
+             # - entity_id: media_player.kitchen
+             #   name: Play:1
           - entity: media_player.everywhere
             type: custom:mini-media-player
+            hide_power: true
             group: true
           - entity: media_player.living_room_tv
             type: custom:mini-media-player
