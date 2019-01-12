@@ -44,4 +44,4 @@ Flashed with Tasmota firmware:
 - [Lovelace Mini-Graph-Card](https://github.com/kalkih/mini-graph-card)
 
 ## Frontend
-
+![Home Page](https://imgur.com/a/Q5NOWvZ)
