@@ -127,12 +127,24 @@ zwave:
   usb_path: /dev/ttyACM0
   network_key: !secret network_key
 
+# Change switches to lights
+light:
+  - platform: switch
+    name: Bedroom Lamp
+    entity_id: switch.bedroom_lamp
+  - platform: switch
+    name: Living Room Lamp
+    entity_id: switch.living_room_lamp
+
+
 # Device Tracking / Presence Detection
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.86.0/24
     consider_home: 0:15:00
     interval_seconds: 30
+    new_device_defaults:
+      track_new_devices: false
 
 # Sonos
 sonos:

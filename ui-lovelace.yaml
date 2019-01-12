@@ -22,10 +22,10 @@ views:
             name: Bedroom Ceiling Light
           - entity: switch.aeotec_zw140_dual_nano_switch_switch
             name: Living Room Ceiling Light
-          - switch.bedroom_lamp
+          - light.bedroom_lamp
           - entity: switch.aeotec_zw140_dual_nano_switch_switch_2
             name: Kitchen Ceiling Light
-          - switch.living_room_lamp
+          - light.living_room_lamp
           - switch.extra
       - type: vertical-stack
         cards:
