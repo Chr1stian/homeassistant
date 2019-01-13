@@ -106,6 +106,24 @@ switch:
     payload_off: "OFF"
     retain: true
 
+  - platform: mqtt
+    name: "Extra 1"
+    command_topic: "cmnd/sonoffS20_1/power"
+    state_topic: "stat/sonoffS20_1/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+  - platform: mqtt
+    name: "Extra 2"
+    command_topic: "cmnd/sonoffS20_2/power"
+    state_topic: "stat/sonoffS20_2/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
 # To expose temperature to Google Home
 climate:
   - platform: generic_thermostat
