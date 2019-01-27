@@ -1,1 +1,112 @@
-[]
+- id: 3b0072837c954bc88bfde87224df0f9b
+  alias: Clean Kitchen Webhooks Times
+  trigger:
+  - platform: webhook
+    webhook_id: clean-kitchen-webhook-times
+  action:
+  - data_template:
+      command: app_zoned_clean
+      entity_id: vacuum.xiaomi_vacuum_cleaner
+      params: '[[27500, 28000, 30200, 30000, {{ trigger.to_state.state | int }}]]'
+    service: vacuum.send_command
+- alias: Clean Kitchen
+  trigger:
+  action:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.xiaomi_vacuum_cleaner
+      command: app_zoned_clean
+      params:
+      - - 27500
+        - 28000
+        - 30200
+        - 30000
+        - 1
+  id: 3fc323c3bbe34536bfa277d88dd7b1c5
+- alias: Clean Living Room
+  trigger:
+  action:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.xiaomi_vacuum_cleaner
+      command: app_zoned_clean
+      params:
+      - - 22500
+        - 24500
+        - 27500
+        - 31000
+        - 1
+  id: b3398dffca5644019f1510962875d3e2
+- alias: Clean Bedroom
+  trigger:
+  action:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.xiaomi_vacuum_cleaner
+      command: app_zoned_clean
+      params:
+      - - 30200
+        - 24500
+        - 35000
+        - 31000
+        - 1
+  id: 79a0758209bb4379b519ee27e975396c
+- id: '1548081579429'
+  alias: VacuumWebhook
+  trigger:
+  - platform: webhook
+    webhook_id: vacuum-kitchen
+  condition: []
+  action:
+  - service: switch.turn_on
+- id: '1548081910632'
+  alias: Clean Kitchen Webhook
+  trigger:
+  - platform: webhook
+    webhook_id: clean-kitchen-webhook
+  condition: []
+  action:
+  - data:
+      command: app_zoned_clean
+      entity_id: vacuum.xiaomi_vacuum_cleaner
+      params:
+      - - 27500
+        - 28000
+        - 30200
+        - 30000
+        - 1
+    service: vacuum.send_command
+- id: '1548082815289'
+  alias: Clean Living Room Webhook
+  trigger:
+  - platform: webhook
+    webhook_id: clean-living-room-webhook
+  condition: []
+  action:
+  - data:
+      command: app_zoned_clean
+      entity_id: vacuum.xiaomi_vacuum_cleaner
+      params:
+      - - 22500
+        - 24500
+        - 27500
+        - 31000
+        - 1
+    service: vacuum.send_command
+- id: '1548082883872'
+  alias: Clean Bedroom Webhook
+  trigger:
+  - platform: webhook
+    webhook_id: clean-bedroom-webhook
+  condition: []
+  action:
+  - data:
+      command: app_zoned_clean
+      entity_id: vacuum.xiaomi_vacuum_cleaner
+      params:
+      - - 30200
+        - 24500
+        - 35000
+        - 31000
+        - 1
+    service: vacuum.send_command

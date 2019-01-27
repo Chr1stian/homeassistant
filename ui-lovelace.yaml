@@ -10,25 +10,23 @@ views:
   - path: default_view
     title: Home
     icon: mdi:home
-    badges:
-      - device_tracker.preference_oneplus
-      - device_tracker.emily_p10
+    #badges:
+      #- device_tracker.preference_oneplus
     cards:
-      - type: entities
-        title: Lights
-        show_header_toggle: true
-        entities:
-          - entity: switch.aeotec_zw139_nano_switch_switch
-            name: Bedroom Ceiling Light
-          - entity: switch.aeotec_zw140_dual_nano_switch_switch
-            name: Living Room Ceiling Light
-          - light.bedroom_lamp
-          - entity: switch.aeotec_zw140_dual_nano_switch_switch_2
-            name: Kitchen Ceiling Light
-          - light.living_room_lamp
-          - switch.extra
       - type: vertical-stack
         cards:
+          - type: entities
+            title: Lights
+            show_header_toggle: true
+            entities:
+              - entity: switch.aeotec_zw139_nano_switch_switch
+                name: Bedroom Ceiling Light
+              - entity: switch.aeotec_zw140_dual_nano_switch_switch
+                name: Living Room Ceiling Light
+              - light.bedroom_lamp
+              - entity: switch.aeotec_zw140_dual_nano_switch_switch_2
+                name: Kitchen Ceiling Light
+              - light.living_room_lamp
           - type: horizontal-stack
             cards:
               - type: "custom:mini-graph-card"
@@ -48,17 +46,9 @@ views:
                 line_width: 8
                 style:
                   font-size: 50%
-          - type: iframe
-            url: https://www.yr.no/sted/Norge/Tr%C3%B8ndelag/Trondheim/Trondheim/meteogram.png
-            # aspect_ratio: 50%
-      - type: entities
-        title: Doors
-        show_header_toggle: false
-        entities:
-        - entity: binary_sensor.fibaro_system_fgk101_door_opening_sensor_sensor_2
-          name: Bedroom Door
-          secondary_info: last-changed
-          device_class: door
+      #- type: iframe
+       # url: https://www.yr.no/sted/Norge/Tr%C3%B8ndelag/Trondheim/Trondheim/meteogram.png
+        # aspect_ratio: 50%
       - type: entities
         title: Media Players
         show_header_toggle: false
@@ -74,6 +64,12 @@ views:
              #   name: Beam
              # - entity_id: media_player.kitchen
              #   name: Play:1
+          - type: divider
+            style:
+              height: 2px
+              background-color: "#dddddd"
+              margin-top: 40px
+              margin-bottom: 40px
           - entity: media_player.everywhere
             type: custom:mini-media-player
             hide_power: true
@@ -98,6 +94,58 @@ views:
             icon: mdi:google-home
             hide_controls: true
             group: true
+  - path: vacuum
+    title: Vacuum
+    icon: mdi:robot-vacuum
+    cards:
+      - type: entities
+        title: Fido
+        show_header_toggle: false
+        entities:
+          - entity: vacuum.xiaomi_vacuum_cleaner
+            name: Xiaomi Roborock S50
+      - type: glance
+        show_name: false
+        show_state: false
+        entities:
+          - entity: vacuum.xiaomi_vacuum_cleaner
+            tap_action: 
+                action: call-service
+                service: vacuum.start
+                service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+            icon: mdi:play
+          - entity: vacuum.xiaomi_vacuum_cleaner
+            tap_action: 
+                action: call-service
+                service: vacuum.pause
+                service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+            icon: mdi:pause
+          - entity: vacuum.xiaomi_vacuum_cleaner
+            tap_action: 
+                action: call-service
+                service: vacuum.return_to_base
+                service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+            icon: mdi:home
+          - entity: vacuum.xiaomi_vacuum_cleaner
+            tap_action: 
+                action: call-service
+                service: vacuum.locate
+                service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+            icon: mdi:map-marker
+      - type: entities
+        title: Automations
+        show_header_toggle: false
+        entities:
+          - entity: automation.clean_kitchen
+            name: Clean Kitchen
+          - entity: automation.clean_living_room
+            name: Clean Living Room
+          - entity: automation.clean_bedroom
+            name: Clean Bedroom
   - path: map
     title: Map
     icon: mdi:map
@@ -109,10 +157,31 @@ views:
           - zone.home
           - zone.school
           - zone.work
-  - path: settings
-    title: Settings
+  - path: extra
+    title: Extra
     icon: mdi:settings
     cards:
+      - type: entities
+        entities:
+          - entity: switch.extra_2
+            name: TV
+          - entity: switch.extra_1
+            name: Sonos  
+          - switch.extra
+  - path: information
+    title: Information
+    icon: mdi:information
+    cards:
+      - type: glance
+        show_name: false
+        show_state: true
+        entities:
+          - entity: binary_sensor.bayesian_presence_christian
+            icon: /local/christian_bitmoji.png
+          - entity: device_tracker.huawei_p10
+          - entity: input_boolean.guest
+            tap_action:
+              action: toggle
       - type: entities
         entities:
           - sensor.speedtest_download
@@ -124,5 +193,25 @@ views:
           - sensor.google_wifi_current_version
           - sensor.google_wifi_local_ip
           - sensor.google_wifi_new_version
+      - type: entities
+        title: Prescence
+        show_header_toggle: false
+        entities:
+          - entity: binary_sensor.bayesian_presence_christian
+            name: Christian
+          - entity: device_tracker.huawei_p10
+            name: Emily
+          - entity: device_tracker.oneplus_6_lan
+          - entity: device_tracker.preference_oneplus
+          - entity: input_boolean.guest
+          - entity: input_boolean.home_occupied
+      - type: entities
+        title: Door
+        show_header_toggle: false
+        entities:
+        - entity: binary_sensor.fibaro_system_fgk101_door_opening_sensor_sensor_2
+          name: Bedroom Door
+          secondary_info: last-changed
+          device_class: door
 
           

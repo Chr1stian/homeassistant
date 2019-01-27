@@ -133,12 +133,21 @@ climate:
     initial_operation_mode: "off"
     target_temp: 21
 
-# Faking the thermostat
+# Input Booleans 
 input_boolean:
+  # Faking the thermostat
   fake_heater:
     name: Fake Heater
     icon: mdi:toggle-switch-off
     initial: off
+  # Toggle Guest Mode
+  guest:
+    name: Guest
+    icon: mdi:car
+  # Home Occupancy Status
+  home_occupied:
+    name: Home Occupied
+    icon: mdi:home
 
 # Z-wave setup
 zwave:
@@ -159,10 +168,32 @@ light:
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.86.0/24
-    consider_home: 0:15:00
+    home_interval: 10
     interval_seconds: 30
+    consider_home: 0:05:00
     new_device_defaults:
       track_new_devices: false
+
+owntracks:
+  max_gps_accuracy: 50
+
+binary_sensor:
+  - platform: bayesian
+    prior: 0.70
+    name: 'Bayesian Presence Christian'
+    device_class: 'presence'
+    probability_threshold: 0.75
+    observations:
+      - entity_id: 'device_tracker.preference_oneplus'
+        prob_given_true: 0.8
+        prob_given_false: 0.4
+        platform: 'state'
+        to_state: 'home'
+      - entity_id: 'device_tracker.oneplus_6'
+        prob_given_true: 0.99
+        prob_given_false: 0.1
+        platform: 'state'
+        to_state: 'home'
 
 # Sonos
 sonos:
@@ -199,6 +230,24 @@ sensor speedtest:
     - download
     - upload
 
+# Xiaomi Mi Roborock S50 Vacuum
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.86.61
+    token: !secret roborock_token
+
+input_number:
+  clean_times_kitchen:
+    name: Clean Kitchen
+    initial: 1
+    min: 1
+    max: 5
+    step: 1
+
+# IFTTT
+ifttt:
+  key: !secret ifttt_api
+
 # Text to speech
 tts:
   - platform: google
@@ -221,6 +270,7 @@ cloud:
         - switch
         - media_player
         - group
+        - light
     entity_config:
       switch.aeotec_zw140_dual_nano_switch_switch:
         name: Living Room Ceiling Light
