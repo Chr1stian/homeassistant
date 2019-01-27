@@ -33,9 +33,13 @@ Flashed with Tasmota firmware:
 - Sonoff TH16 (temp + hum)
 - Sonoff S20 x 3
 
+### Other
+- Xiaomi Roborock Mi S50 Robot Vacuum
+
 ## Components
 - Cloud Google Assistant
 - Cloud OwnTracks
+- Cloud IFTTT Webhooks
 - NMap
 - Node-RED
 
