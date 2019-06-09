@@ -46,6 +46,14 @@ views:
                 line_width: 8
                 style:
                   font-size: 50%
+      - type: glance
+        # show_name: false
+        entities:
+          - entity: device_tracker.oneplus_6_lan
+          - entity: device_tracker.daniels_iphone_lan
+          - entity:  device_tracker.galaxy_a8_2018_lan
+          - entity: device_tracker.android_1c44494142cafe49_lan
+
       #- type: iframe
        # url: https://www.yr.no/sted/Norge/Tr%C3%B8ndelag/Trondheim/Trondheim/meteogram.png
         # aspect_ratio: 50%
@@ -84,7 +92,7 @@ views:
             icon: mdi:speaker
             hide_controls: true
             group: true
-          - entity: media_player.hub
+          - entity: media_player.googlehomehub7023
             type: custom:mini-media-player
             icon: mdi:tablet
             hide_controls: true
@@ -172,16 +180,6 @@ views:
     title: Information
     icon: mdi:information
     cards:
-      - type: glance
-        show_name: false
-        show_state: true
-        entities:
-          - entity: binary_sensor.bayesian_presence_christian
-            icon: /local/christian_bitmoji.png
-          - entity: device_tracker.huawei_p10
-          - entity: input_boolean.guest
-            tap_action:
-              action: toggle
       - type: entities
         entities:
           - sensor.speedtest_download
@@ -197,14 +195,10 @@ views:
         title: Prescence
         show_header_toggle: false
         entities:
-          - entity: binary_sensor.bayesian_presence_christian
-            name: Christian
-          - entity: device_tracker.huawei_p10
-            name: Emily
           - entity: device_tracker.oneplus_6_lan
-          - entity: device_tracker.preference_oneplus
           - entity: input_boolean.guest
           - entity: input_boolean.home_occupied
+          - entity: input_boolean.vacuumed_today
       - type: entities
         title: Door
         show_header_toggle: false

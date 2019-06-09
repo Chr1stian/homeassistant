@@ -148,6 +148,10 @@ input_boolean:
   home_occupied:
     name: Home Occupied
     icon: mdi:home
+  # Vacuumed Today
+  vacuumed_today:
+    name: Vacuumed Today
+    icon: mdi:robot-vacuum
 
 # Z-wave setup
 zwave:
@@ -174,67 +178,24 @@ device_tracker:
     new_device_defaults:
       track_new_devices: false
 
-owntracks:
-  max_gps_accuracy: 50
-
-binary_sensor:
-  - platform: bayesian
-    prior: 0.70
-    name: 'Bayesian Presence Christian'
-    device_class: 'presence'
-    probability_threshold: 0.75
-    observations:
-      - entity_id: 'device_tracker.preference_oneplus'
-        prob_given_true: 0.8
-        prob_given_false: 0.4
-        platform: 'state'
-        to_state: 'home'
-      - entity_id: 'device_tracker.oneplus_6'
-        prob_given_true: 0.99
-        prob_given_false: 0.1
-        platform: 'state'
-        to_state: 'home'
-
-# Sonos
-sonos:
-  media_player:
-    interface_addr: 192.168.86.44
-    hosts: 
-      - 192.168.86.51 #Beam - Living Room
-      - 192.168.86.52 #Play:1 - Living Room
-
-
 # Google Wifi and Speedtest
 sensor googlewifi:
   - platform: google_wifi
 
 #SPEEDTEST	
-sensor speedtest:
-  platform: speedtest
-  minute: 30
-  hour:
-    - 0
-    - 2
-    - 4
-    - 6
-    - 8
-    - 10
-    - 12
-    - 14
-    - 16
-    - 18
-    - 20
-    - 22
+speedtestdotnet:
+  scan_interval:
+    minutes: 60
   monitored_conditions:
     - ping
     - download
     - upload
 
 # Xiaomi Mi Roborock S50 Vacuum
-vacuum:
-  - platform: xiaomi_miio
-    host: 192.168.86.61
-    token: !secret roborock_token
+#vacuum:
+#  - platform: xiaomi_miio
+#    host: 192.168.86.61
+#    token: !secret roborock_token
 
 input_number:
   clean_times_kitchen:
@@ -250,48 +211,16 @@ ifttt:
 
 # Text to speech
 tts:
-  - platform: google
+  - platform: google_translate
+    service_name: google_say
 
-# Cloud - Google Home Device Interface Setup
-cloud:
-  google_actions:
-    filter:
-      include_entities:
-        - switch.aeotec_zw140_dual_nano_switch_switch
-        - switch.aeotec_zw140_dual_nano_switch_switch_2
-        - switch.aeotec_zw139_nano_switch_switch
-        - climate.living_room_temperature
-        - switch.living_room_lamp
-        - switch.bedroom_lamp
-        - switch.extra
-      exclude_entities:
-        - input_boolean.fake_heater
-      exclude_domains:
-        - switch
-        - media_player
-        - group
-        - light
-    entity_config:
-      switch.aeotec_zw140_dual_nano_switch_switch:
-        name: Living Room Ceiling Light
-        room: living room
-      switch.aeotec_zw140_dual_nano_switch_switch_2:
-        name: Kitchen Ceiling Light
-        room: kitchen
-      switch.aeotec_zw139_nano_switch_switch:
-        name: Bedroom Ceiling Light
-        room: bedroom
-      climate.living_room_temperature:
-        name: Living Room Temperature
-        room: living room
-      switch.living_room_lamp:
-        name: Living Room Lamp
-        room: living room
-      switch.bedroom_lamp:
-        name: Bedroom Lamp
-        room: bedroom
-      switch.extra:
-        name: Extra
+#Autodiscovery
+ssdp:
+
+zeroconf:
+
+#System health
+system_health:
 
 group: !include groups.yaml
 automation: !include automations.yaml
