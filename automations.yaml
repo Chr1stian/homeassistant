@@ -1,112 +1,110 @@
-- id: 3b0072837c954bc88bfde87224df0f9b
-  alias: Clean Kitchen Webhooks Times
+- id: "1581109935147"
+  alias: IKEA Remote ON
+  description: ""
   trigger:
-  - platform: webhook
-    webhook_id: clean-kitchen-webhook-times
-  action:
-  - data_template:
-      command: app_zoned_clean
-      entity_id: vacuum.xiaomi_vacuum_cleaner
-      params: '[[27500, 28000, 30200, 30000, {{ trigger.to_state.state | int }}]]'
-    service: vacuum.send_command
-- alias: Clean Kitchen
-  trigger:
-  action:
-  - service: vacuum.send_command
-    data:
-      entity_id: vacuum.xiaomi_vacuum_cleaner
-      command: app_zoned_clean
-      params:
-      - - 27500
-        - 28000
-        - 30200
-        - 30000
-        - 1
-  id: 3fc323c3bbe34536bfa277d88dd7b1c5
-- alias: Clean Living Room
-  trigger:
-  action:
-  - service: vacuum.send_command
-    data:
-      entity_id: vacuum.xiaomi_vacuum_cleaner
-      command: app_zoned_clean
-      params:
-      - - 22500
-        - 24500
-        - 27500
-        - 31000
-        - 1
-  id: b3398dffca5644019f1510962875d3e2
-- alias: Clean Bedroom
-  trigger:
-  action:
-  - service: vacuum.send_command
-    data:
-      entity_id: vacuum.xiaomi_vacuum_cleaner
-      command: app_zoned_clean
-      params:
-      - - 30200
-        - 24500
-        - 35000
-        - 31000
-        - 1
-  id: 79a0758209bb4379b519ee27e975396c
-- id: '1548081579429'
-  alias: VacuumWebhook
-  trigger:
-  - platform: webhook
-    webhook_id: vacuum-kitchen
+    - device_id: 39ed7575e9d945309dc9992e6e7cd245
+      domain: deconz
+      platform: device
+      subtype: turn_on
+      type: remote_button_short_press
   condition: []
   action:
-  - service: switch.turn_on
-- id: '1548081910632'
-  alias: Clean Kitchen Webhook
+    - data:
+        media_content_id: http://lyd.nrk.no/nrk_radio_p1_ostlandssendingen_mp3_h
+        media_content_type: audio/mp4
+      entity_id: media_player.kitchen_display
+      service: media_player.play_media
+- id: "1581110114282"
+  alias: IKEA Remote OFF
+  description: ""
   trigger:
-  - platform: webhook
-    webhook_id: clean-kitchen-webhook
+    - device_id: 39ed7575e9d945309dc9992e6e7cd245
+      domain: deconz
+      platform: device
+      subtype: turn_off
+      type: remote_button_short_press
   condition: []
   action:
-  - data:
-      command: app_zoned_clean
-      entity_id: vacuum.xiaomi_vacuum_cleaner
-      params:
-      - - 27500
-        - 28000
-        - 30200
-        - 30000
-        - 1
-    service: vacuum.send_command
-- id: '1548082815289'
-  alias: Clean Living Room Webhook
+    - data: {}
+      entity_id: media_player.kitchen_display
+      service: media_player.media_stop
+- id: "1581256705061"
+  alias: Shelly 2 Basement Button 2 Press
+  description: ""
   trigger:
-  - platform: webhook
-    webhook_id: clean-living-room-webhook
+    - device_id: 55b478459d8c4558a7320d070edf75b7
+      domain: switch
+      entity_id: switch.shelly_shsw_21_135668_2
+      platform: device
+      type: turned_on
   condition: []
   action:
-  - data:
-      command: app_zoned_clean
-      entity_id: vacuum.xiaomi_vacuum_cleaner
-      params:
-      - - 22500
-        - 24500
-        - 27500
-        - 31000
-        - 1
-    service: vacuum.send_command
-- id: '1548082883872'
-  alias: Clean Bedroom Webhook
+    - device_id: b8a9667c26e24baa8d597d3a88c8747d
+      domain: switch
+      entity_id: switch.shelly_shsw_21_55a547_1
+      type: toggle
+- id: "1581256774052"
+  alias: Shelly 2 Stairs Button 2 Press
+  description: ""
   trigger:
-  - platform: webhook
-    webhook_id: clean-bedroom-webhook
+    - device_id: b8a9667c26e24baa8d597d3a88c8747d
+      domain: switch
+      entity_id: switch.shelly_shsw_21_55a547_2
+      platform: device
+      type: turned_on
   condition: []
   action:
-  - data:
-      command: app_zoned_clean
-      entity_id: vacuum.xiaomi_vacuum_cleaner
-      params:
-      - - 30200
-        - 24500
-        - 35000
-        - 31000
-        - 1
-    service: vacuum.send_command
+    - device_id: 55b478459d8c4558a7320d070edf75b7
+      domain: switch
+      entity_id: switch.shelly_shsw_21_135668_1
+      type: toggle
+
+- alias: Motion Sensor Lights On
+  trigger:
+    platform: state
+    entity_id: binary_sensor.aeon_labs_zw100_multisensor_6_sensor
+    to: "on"
+  condition:
+    condition: time
+    after: "07:30"
+    before: "22:30"
+  action:
+    service: homeassistant.turn_on
+    entity_id: switch.shelly_shsw_21_135668_1
+
+- alias: Motion Sensor Lights On At Night
+  trigger:
+    platform: state
+    entity_id: binary_sensor.aeon_labs_zw100_multisensor_6_sensor
+    to: "on"
+  condition:
+    condition: time
+    after: "22:30"
+    before: "07:30"
+  action:
+    service: homeassistant.turn_on
+    entity_id: switch.ikea_plug_1
+
+- alias: Motion Sensor Lights Off
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aeon_labs_zw100_multisensor_6_sensor
+      to: "off"
+      for:
+        minutes: 3
+  action:
+    - service: homeassistant.turn_off
+      entity_id: switch.shelly_shsw_21_135668_1
+
+- id: testing-time-ifttt
+  alias: IFTTT Testing Time
+  trigger:
+    - event_data:
+        action: call_service
+      event_type: ifttt_webhook_received
+      platform: event
+  condition: []
+  action:
+    - data_template:
+        entity_id: "{{ trigger.event.data.entity_id }}"
+      service_template: "{{ trigger.event.data.service }}"

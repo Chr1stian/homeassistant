@@ -13,162 +13,61 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
 
-# Show links to resources in log and frontend
-#introduction:
+http:
+  base_url: https://preference.duckdns.org:433
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
 
-# Enables the frontend
-frontend:
+# https://www.home-assistant.io/integrations/default_config/
+default_config:
 
-# Makes the lovelace frontend be editable from the ui-lovelace.yaml file
 lovelace:
   mode: yaml
 
-# Enables configuration UI
-config:
-
-http:
-    api_password: !secret api_password
-#   base_url: example.duckdns.org:8123
-
-# Checks for available updates
-# Note: This component will send some information about your system to
-# the developers to assist with development of Home Assistant.
-# For more information, please see:
-# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
-updater:
-  # Optional, allows Home Assistant developers to focus on popular components.
-  # include_used_components: true
-
 # Discover some devices automatically
 discovery:
+  ignore:
+    - igd
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
-
-# Enables support for tracking state changes over time
-history:
-
-# View all events in a logbook
-logbook:
 
 recorder:
   purge_keep_days: 1
   purge_interval: 1
 
-# Enables a map showing the location of tracked devices
-map:
+# Changes switches to light/lamps
+light:
+  - platform: switch
+    name: Basement Lamp
+    entity_id: switch.ikea_plug_1
+  - platform: switch
+    name: Bedroom Lamp
+    entity_id: switch.sonoffth_bedroom
 
-# Track the sun
-sun:
-
-# Sensors
-sensor:
-  # Weather prediction
-  - platform: yr
-  - platform: mqtt
-    name: "Living Room Temp"
-    state_topic: "tele/sonoffTH/SENSOR"
-    unit_of_measurement: "°C"
-    qos: 1
-    value_template: "{{ value_json.AM2301.Temperature }}"
-  - platform: mqtt
-    name: "Living Room Humidity"
-    state_topic: "tele/sonoffTH/SENSOR"
-    unit_of_measurement: "%"
-    qos: 1
-    value_template: "{{ value_json.AM2301.Humidity }}"
-
-switch:
-  - platform: mqtt
-    name: "Extra"
-    command_topic: "cmnd/sonoff/power"
-    state_topic: "stat/sonoff/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
-
-  - platform: mqtt
-    name: "Living Room Lamp"
-    command_topic: "cmnd/sonoffTH/power"
-    state_topic: "stat/sonoffTH/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
-
-  - platform: mqtt
-    name: "Bedroom Lamp"
-    command_topic: "cmnd/sonoffS20/power"
-    state_topic: "stat/sonoffS20/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
-
-  - platform: mqtt
-    name: "Extra 1"
-    command_topic: "cmnd/sonoffS20_1/power"
-    state_topic: "stat/sonoffS20_1/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
-
-  - platform: mqtt
-    name: "Extra 2"
-    command_topic: "cmnd/sonoffS20_2/power"
-    state_topic: "stat/sonoffS20_2/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
-
-# To expose temperature to Google Home
+# Creates thermostats
 climate:
   - platform: generic_thermostat
-    name: Living Room Temperature
-    heater: input_boolean.fake_heater
-    target_sensor: sensor.living_room_temp
-    initial_operation_mode: "off"
-    target_temp: 21
-
-# Input Booleans 
-input_boolean:
-  # Faking the thermostat
-  fake_heater:
-    name: Fake Heater
-    icon: mdi:toggle-switch-off
-    initial: off
-  # Toggle Guest Mode
-  guest:
-    name: Guest
-    icon: mdi:car
-  # Home Occupancy Status
-  home_occupied:
-    name: Home Occupied
-    icon: mdi:home
-  # Vacuumed Today
-  vacuumed_today:
-    name: Vacuumed Today
-    icon: mdi:robot-vacuum
+    name: Bedroom
+    heater: switch.sonoffs2x_bedroom
+    target_sensor: sensor.sonoffth_bedroom_th_bedroom_temperature
+    min_temp: 15
+    max_temp: 25
+  - platform: generic_thermostat
+    name: Basement
+    heater: switch.sonoffs2x_basement
+    target_sensor: sensor.aeon_labs_zw100_multisensor_6_temperature
+    min_temp: 15
+    max_temp: 25
 
 # Z-wave setup
 zwave:
-  usb_path: /dev/ttyACM0
+  usb_path: /dev/serial/by-id/usb-0658_0200-if00 #/dev/ttyACM0
   network_key: !secret network_key
 
-# Change switches to lights
-light:
-  - platform: switch
-    name: Bedroom Lamp
-    entity_id: switch.bedroom_lamp
-  - platform: switch
-    name: Living Room Lamp
-    entity_id: switch.living_room_lamp
-
-
-# Device Tracking / Presence Detection
+# Tracks devices with Person
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.86.0/24
@@ -177,58 +76,65 @@ device_tracker:
     consider_home: 0:05:00
     new_device_defaults:
       track_new_devices: false
+  - platform: google_maps
+    username: homeassistant.preference@gmail.com
 
-# Google Wifi and Speedtest
-sensor googlewifi:
+# Sensors
+sensor:
+  # Google Wifi and Speedtest
   - platform: google_wifi
+    host: 192.168.86.1
+  # Entur
+  - platform: entur_public_transport
+    name: Transport
+    expand_platforms: true
+    show_on_map: true
+    stop_ids:
+      - NSR:StopPlace:58280
+      - NSR:StopPlace:3657
 
-#SPEEDTEST	
+#SPEEDTEST
 speedtestdotnet:
   scan_interval:
-    minutes: 60
+    minutes: 30
   monitored_conditions:
     - ping
     - download
     - upload
 
 # Xiaomi Mi Roborock S50 Vacuum
-#vacuum:
-#  - platform: xiaomi_miio
-#    host: 192.168.86.61
-#    token: !secret roborock_token
-
-input_number:
-  clean_times_kitchen:
-    name: Clean Kitchen
-    initial: 1
-    min: 1
-    max: 5
-    step: 1
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.86.61
+    token: !secret roborock_token
 
 # IFTTT
 ifttt:
   key: !secret ifttt_api
 
-# Text to speech
-tts:
-  - platform: google_translate
-    service_name: google_say
+# Google Assistant / Home
+google_assistant:
+  project_id: home-assistant-267320
+  service_account: !include SERVICE_ACCOUNT.json
+  report_state: true
+  exposed_domains:
+    - switch
+    - light
+    - climate
+    - sensor
+    - vacuum
 
-#Autodiscovery
-ssdp:
+# Withings / Health Mate
+# Example configuration.yaml entry
+withings:
+  client_id: !secret client_id
+  client_secret: !secret consumer_secret
+  profiles:
+    - !secret user_profile_name
 
-zeroconf:
+# Shelly
+shelly:
+  discovery: true #add all devices (default)
 
-#System health
-system_health:
-
-group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
 zone: !include zones.yaml
-
-panel_iframe:
-  configurator:
-    title: Configurator
-    icon: mdi:wrench
-    url: http://hassio.local:3218
+automation: !include automations.yaml

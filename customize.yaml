@@ -1,4 +1,17 @@
+person.christian:
+  entity_picture: "/local/christian_bitmoji.png"
+
+person.sebastian:
+  entity_picture: "/local/sebastian_bitmoji.png"
+
+person.daniel:
+  entity_picture: "/local/daniel_bitmoji.png"
+
+person.carina:
+  entity_picture: "/local/carina_bitmoji.png"
+
+person.trond:
+  entity_picture: "/local/trond_bitmoji.png"
+
 binary_sensor.fibaro_system_fgk101_door_opening_sensor_sensor_2:
   device_class: door
-sensor.living_room_humidity:
-  device_class: humidity
