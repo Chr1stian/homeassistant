@@ -8,6 +8,8 @@ resources:
     type: js
   - url: /community_plugin/lovelace-slider-entity-row/slider-entity-row.js
     type: module
+  - url: /community_plugin/lovelace-xiaomi-vacuum-card/xiaomi-vacuum-card.js
+    type: module
 
 title: Home
 views:
@@ -188,44 +190,26 @@ views:
     title: Vacuum
     icon: mdi:robot-vacuum
     cards:
-      - type: entities
-        title: Fido
-        show_header_toggle: false
-        entities:
-          - entity: vacuum.xiaomi_vacuum_cleaner
-            name: Xiaomi Roborock S50
-      - type: glance
-        show_name: false
-        show_state: false
-        entities:
-          - entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.start
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            icon: mdi:play
-          - entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.pause
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            icon: mdi:pause
-          - entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.return_to_base
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            icon: mdi:home
-          - entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.locate
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            icon: mdi:map-marker
+      - type: custom:xiaomi-vacuum-card
+        entity: vacuum.xiaomi_vacuum_cleaner
+        image: /local/community/lovelace-xiaomi-vacuum-card/vacuum.png
+        name: Fido
+        vendor: xiaomi
+        buttons:
+          start: true
+          stop: true
+          locate: true
+        icons:
+          start: mdi:play
+          stop: mdi:stop
+        labels:
+          status: Status
+          battery: Battery
+          mode: Mode
+          main_brush: Main Brush
+          side_brush: Side Brush
+          filter: Filter
+          sensor: Sensor
 
   #####################################################################################
   # MAP # MAP # MAP # MAP # MAP # MAP # MAP # MAP # MAP # MAP # MAP # MAP # MAP # MAP #
@@ -236,8 +220,9 @@ views:
     panel: true
     cards:
       - type: map
-        title: Map
         aspect_ratio: default
+        default_zoom: 12
+        geo_location_sources: [all]
         entities:
           - zone.home
           - zone.work
@@ -303,6 +288,11 @@ views:
         title: Health
         show_header_toggle: false
         entities:
+          - sensor.christian_height
           - sensor.withings_weight_kg_christian_nyvoll
+          - sensor.christian_steps
+          - sensor.christian_distance
+          - sensor.christian_move_time
           - sensor.withings_fat_ratio_pct_christian_nyvoll
           - sensor.withings_heart_pulse_bpm_christian_nyvoll
+          - sensor.christian_calories

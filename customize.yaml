@@ -1,17 +1,22 @@
 person.christian:
-  entity_picture: "/local/christian_bitmoji.png"
-
+  entity_picture: /local/christian_bitmoji.png
 person.sebastian:
-  entity_picture: "/local/sebastian_bitmoji.png"
-
+  entity_picture: /local/sebastian_bitmoji.png
 person.daniel:
-  entity_picture: "/local/daniel_bitmoji.png"
-
+  entity_picture: /local/daniel_bitmoji.png
 person.carina:
-  entity_picture: "/local/carina_bitmoji.png"
-
+  entity_picture: /local/carina_bitmoji.png
 person.trond:
-  entity_picture: "/local/trond_bitmoji.png"
-
+  entity_picture: /local/trond_bitmoji.png
 binary_sensor.fibaro_system_fgk101_door_opening_sensor_sensor_2:
   device_class: door
+sensor.christian_calories:
+  friendly_name: Calories
+sensor.christian_height:
+  friendly_name: Height
+sensor.christian_steps:
+  friendly_name: Steps
+sensor.christian_distance:
+  friendly_name: Distance
+sensor.christian_move_time:
+  friendly_name: Move Time

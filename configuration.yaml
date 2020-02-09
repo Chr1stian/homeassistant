@@ -92,6 +92,10 @@ sensor:
     stop_ids:
       - NSR:StopPlace:58280
       - NSR:StopPlace:3657
+  - platform: google_fit
+    name: Christian
+    client_id: !secret google_fit_client_id
+    client_secret: !secret google_fit_client_secret
 
 #SPEEDTEST
 speedtestdotnet:
