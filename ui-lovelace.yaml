@@ -2,7 +2,7 @@
 resources:
   - url: /community_plugin/mini-media-player/mini-media-player-bundle.js
     type: module
-  - url: /local/mini-graph-card-bundle.js?v=0.1.0
+  - url: /community_plugin/mini-graph-card/mini-graph-card-bundle.js
     type: module
   - url: /community_plugin/entur-card/entur-card.js
     type: js
@@ -127,13 +127,15 @@ views:
         entity: climate.bedroom
       - type: horizontal-stack
         cards:
-          - type: "custom:mini-graph-card"
-            entity: sensor.sonoffth_bedroom_th_bedroom_temperature
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.sonoffth_bedroom_th_bedroom_temperature
             name: Temperature
             line_color: "#3498db"
             line_width: 8
-          - type: "custom:mini-graph-card"
-            entity: sensor.sonoffth_bedroom_th_bedroom_humidity
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.sonoffth_bedroom_th_bedroom_humidity
             device_class: humidity
             name: Humidity
             line_color: "#e74c3c"
@@ -172,13 +174,15 @@ views:
         entity: climate.basement
       - type: horizontal-stack
         cards:
-          - type: "custom:mini-graph-card"
-            entity: sensor.aeon_labs_zw100_multisensor_6_temperature
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.aeon_labs_zw100_multisensor_6_temperature
             name: Temperature
             line_color: "#3498db"
             line_width: 8
-          - type: "custom:mini-graph-card"
-            entity: sensor.aeon_labs_zw100_multisensor_6_relative_humidity
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.aeon_labs_zw100_multisensor_6_relative_humidity
             device_class: humidity
             name: Humidity
             line_color: "#e74c3c"

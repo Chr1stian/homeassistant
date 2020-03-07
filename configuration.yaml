@@ -5,7 +5,7 @@ homeassistant:
   latitude: !secret latitude
   longitude: !secret longitude
   # Impacts weather/sunrise data (altitude above sea level in meters)
-  elevation: 28
+  elevation: 78
   # metric for Metric, imperial for Imperial
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -119,14 +119,36 @@ ifttt:
 # Google Assistant / Home
 google_assistant:
   project_id: home-assistant-267320
-  service_account: !include SERVICE_ACCOUNT.json
+  service_account: !include serv_acc_assistant.json
   report_state: true
-  exposed_domains:
-    - switch
-    - light
-    - climate
-    - sensor
-    - vacuum
+  entity_config:
+    switch.shelly2_basement_1:
+      name: Basement Light
+      expose: true
+      room: Basement
+    switch.shelly2_stairs_1:
+      name: Stairs Light
+      expose: true
+      room: Basement
+    light.basement_lamp:
+      name: Basement Lamp
+      expose: true
+      room: Basement
+    light.ikea_bulb_bedroom_1:
+      name: Bedroom Light
+      expose: true
+      room: Bedroom
+    light.bedroom_lamp:
+      name: Bedroom Lamp
+      expose: true
+      room: Bedroom
+    climate.bedroom:
+      expose: true
+      room: Bedroom
+    climate.basement:
+      expose: true
+      room: Basement
+  expose_by_default: false
 
 # Withings / Health Mate
 # Example configuration.yaml entry
